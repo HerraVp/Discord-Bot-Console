@@ -40,7 +40,6 @@ except ModuleNotFoundError:
 
 client = discord.Client()
 console = Console(client)
-#token = "ODEwODEzNTQzNzkxMzI5MzAx.YCpG9Q.VGrNMzxYVvBl8Omj1Q5R5Wzb1mY"
 
 print(f"{Fore.GREEN}------------- Remote Bot Console ------------ \t\n")
 print(f"{Fore.GREEN}------------ By Vp (https://github.com/herravp) ------------- \t\n")
