@@ -1,10 +1,10 @@
-# Remote Discord Bot Console
-# Use this to login to a discord bot, and use commands using the console.
-# You can also create your own commands if you want.
-# Dm Vp#0001 on discord for help.
-#
-#
-# Copyright (C) 2022 Vp (https://github.com/herravp)
+#| Remote Discord Bot Console
+#| Use this to login to a discord bot, and use commands using the console.
+#| You can also create your own commands if you want.
+#| Dm Vp#0001 on discord for help.
+#|
+#|
+#| Copyright (C) 2022 Vp (https://github.com/herravp)
 import os
 import sys
 import time
@@ -218,9 +218,6 @@ async def massnickname(nickname):
         print(Fore.RED + e + Fore.GREEN)
                                 
                 
-
-
-
 # Login
 console.start()
 client.run(token)
