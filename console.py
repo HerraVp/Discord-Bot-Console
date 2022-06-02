@@ -91,7 +91,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandOnCooldown):
         print(f"{Fore.RED}Command is on cooldown.")
     else:
-        print(f"{Fore.RED}Error: " + error)
+        print(f"{Fore.RED}Error: " + str(error))
 
 @console.command()
 async def fetchpermissions():
@@ -101,9 +101,9 @@ async def fetchpermissions():
                 print(f"{Fore.GREEN} Guild: {guild.name} \n")
                 print(f"{Fore.GREEN} Role: {role.name} \n")
                 for perm in role.permissions:
-                    print(f"{Fore.GREEN} Role perms: {perm}\n")
+                    print(f"{Fore.GREEN} {role.name} perms: {perm}\n")
     except Exception as e:
-        print(f"{Fore.RED} {e} {Fore.GREEN}\n")
+        print(f"{Fore.RED} {str(e)} {Fore.GREEN}\n")
 
 @console.command()
 async def fetchwebhooks():
@@ -114,9 +114,10 @@ async def fetchwebhooks():
             for webhook in webhook:
                 print(f"{Fore.GREEN}Webhook: {webhook.url} \n")
                 print(f"{Fore.GREEN}Webhook Channel: {webhook.channel} \n")
+                continue
 
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)                    
+        print(Fore.RED + str(e) + Fore.GREEN)                    
 
 
 @console.command()
@@ -131,7 +132,7 @@ async def fetchmessages():
                         with open(f"{guild.name}_messages".replace(" ", "_"), "a") as f:
                             f.write(str(message.author) + " || " + str(message.content) + "\n")
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def fetchchannels():
@@ -140,8 +141,9 @@ async def fetchchannels():
         for guild in client.guilds:
             for channel in guild.channels:
                 print(guild.name + " || " + channel.name + " || " + channel.id)
+                continue
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def fetchroles():
@@ -150,22 +152,23 @@ async def fetchroles():
         for guild in client.guilds:
             for role in guild.roles:
                 print(guild.name + " || " + role.name + " || " + role.id)
+                continue
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN) 
+        print(Fore.RED + str(e) + Fore.GREEN) 
                
 @console.command()
-async def say(message):
+async def say(*args):
     try:
         print("Sending message... \n")
         for channel in client.get_all_channels():
             if isinstance(channel, discord.TextChannel):
                 print("Message sent to: " + channel.name)
-                await channel.send(message)
+                await channel.send(" ".join(args))
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
-async def createchannels(name, amount):
+async def createchannels(amount, name):
     try:
         print("Creating channels... \n")
         for guild in client.guilds:
@@ -173,7 +176,7 @@ async def createchannels(name, amount):
                 print("Created channel: " + name + "-" + str(i) + " in guild: " + guild.name)
                 await guild.create_text_channel(name + "-" + str(i))
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def deletechannels():
@@ -184,7 +187,7 @@ async def deletechannels():
                 print("Deleted channel: " + channel.name)
                 await channel.delete()
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def deletemessages():
@@ -197,7 +200,7 @@ async def deletemessages():
                     print("Deleted message: " + message.content)
                     await message.delete()
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)  
+        print(Fore.RED + str(e) + Fore.GREEN)  
 
 @console.command()
 async def deleteroles():
@@ -209,31 +212,32 @@ async def deleteroles():
                     print("Deleted role: " + role.name)
                     await role.delete()
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)         
+        print(Fore.RED + str(e) + Fore.GREEN)         
 
 @console.command()
-async def spam(message, amount):
+async def spam(amount, *args):
     try:
         print("Spamming... \n")
         for channel in client.get_all_channels():
             if isinstance(channel, discord.TextChannel):
                 for i in range(1, int(amount) + 1):
                     print("Spammed channel: " + channel.name + " in guild: " + channel.guild.name)
-                    await channel.send(str(message))
+                    await channel.send(" ".join(args))
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def massnickname(nickname):
     try:
         print("Changing nickname... \n")
         member = discord.Member
-        for member in client.get_all_members():
-            if isinstance(member, discord.Member):
-                print("Changed the nickname of: " + member.name)
-                await member.edit(nick=nickname)
+        for guild in client.guilds:
+            for member in guild.members:
+                print("Changed the nickname for: " + member.name)
+                await member.edit(nick=str(nickname))
+                continue
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def kickmembers():
@@ -243,8 +247,9 @@ async def kickmembers():
             if isinstance(member, discord.Member):
                 print("Kicked: " + member.name + " in " + member.guild.name)
                 await member.kick()
+                continue
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)     
+        print(Fore.RED + str(e) + Fore.GREEN)     
 
 
 @console.command()
@@ -258,11 +263,12 @@ async def createinvite():
                     print(guild.name + " :")
                     print(channel.name + " || " + invite.url)
     except Exception as e:
-        print(Fore.RED + e + Fore.GREEN)
+        print(Fore.RED + str(e) + Fore.GREEN)
 
 @console.command()
 async def exit():
     print("Exiting... \n")
+    print(Fore.RESET)
     await client.logout()
     await client.close()
     sys.exit()

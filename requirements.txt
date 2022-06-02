@@ -1,0 +1,4 @@
+discord.py
+pyarmor
+discord.py-Console
+colorama
